@@ -9,8 +9,8 @@
 set -e
 
 # configs for 'chain'
-affix=kws
-stage=0
+affix=kws2
+stage=10
 train_stage=-10
 get_egs_stage=-10
 dir=exp/chain/tdnn_1b  
@@ -28,7 +28,7 @@ nj=15
 minibatch_size=128
 dropout_schedule='0,0@0.20,0.3@0.50,0'
 frames_per_eg=150,110,90
-remove_egs=true
+remove_egs=false
 common_egs_dir=
 #common_egs_dir=exp/chain/tdnn_1b_kws/egs
 xent_regularize=0.1
@@ -97,17 +97,17 @@ if [ $stage -le 10 ]; then
   linear-component name=cnnl1 dim=284 $linear_opts
   
   # the first splicing is moved before the lda layer, so no splicing here
-  relu-batchnorm-layer name=tdnn1 dim=850
-  relu-batchnorm-layer name=tdnn2 dim=850 input=Append(-1,0,2)
-  relu-batchnorm-layer name=tdnn3 dim=850 input=Append(-3,0,3)
-  relu-batchnorm-layer name=tdnn4 dim=850 input=Append(-7,0,2)
-  relu-batchnorm-layer name=tdnn5 dim=850 input=Append(-3,0,3)
-  relu-batchnorm-layer name=tdnn6 dim=850
+  relu-batchnorm-layer name=tdnn1 dim=400
+  relu-batchnorm-layer name=tdnn2 dim=400 input=Append(-1,0,2)
+  relu-batchnorm-layer name=tdnn3 dim=400 input=Append(-3,0,3)
+  relu-batchnorm-layer name=tdnn4 dim=400 input=Append(-7,0,2)
+  relu-batchnorm-layer name=tdnn5 dim=400 input=Append(-3,0,3)
+  relu-batchnorm-layer name=tdnn6 dim=400
   linear-component name=prefinal-l dim=256 $linear_opts 
-  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=850 target-rms=0.5
+  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=400 target-rms=0.5
   output-layer name=output include-log-softmax=false dim=$num_targets $output_opts max-change=1.5
 
-  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=850 target-rms=0.5
+  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=400 target-rms=0.5
   output-layer name=output-xent dim=$num_targets learning-rate-factor=$learning_rate_factor $output_opts max-change=1.5
 EOF
   steps/nnet3/xconfig_to_configs.py --xconfig-file $dir/configs/network.xconfig --config-dir $dir/configs/
