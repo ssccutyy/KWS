@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=kws5
+affix=kws6
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -29,8 +29,8 @@ minibatch_size=128
 dropout_schedule='0,0@0.20,0.3@0.50,0'
 frames_per_eg=150,110,90
 remove_egs=false
-#common_egs_dir=
-common_egs_dir=exp/chain/tdnn_1b_kws2/egs
+common_egs_dir=
+#common_egs_dir=exp/chain/tdnn_1b_kws2/egs
 xent_regularize=0.1
 
 # End configuration section.
