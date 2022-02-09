@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=kws4
+affix=kws5
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -99,10 +99,10 @@ if [ $stage -le 10 ]; then
   # the first splicing is moved before the lda layer, so no splicing here
   relu-batchnorm-layer name=tdnn1 dim=100
   relu-batchnorm-layer name=tdnn2 dim=100 input=Append(-1,0,2)
-  relu-batchnorm-layer name=tdnn3 dim=100 input=Append(-3,0,3)
-  relu-batchnorm-layer name=tdnn4 dim=100 input=Append(-7,0,2)
-  relu-batchnorm-layer name=tdnn5 dim=100 input=Append(-3,0,3)
-  relu-batchnorm-layer name=tdnn6 dim=100
+#  relu-batchnorm-layer name=tdnn3 dim=100 input=Append(-3,0,3)
+#  relu-batchnorm-layer name=tdnn4 dim=100 input=Append(-7,0,2)
+#  relu-batchnorm-layer name=tdnn5 dim=100 input=Append(-3,0,3)
+  relu-batchnorm-layer name=tdnn3 dim=100
   linear-component name=prefinal-l dim=128 $linear_opts 
   relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=100 target-rms=0.5
   output-layer name=output include-log-softmax=false dim=$num_targets $output_opts max-change=1.5
