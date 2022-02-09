@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=kws6
+affix=kws7
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -29,8 +29,8 @@ minibatch_size=128
 dropout_schedule='0,0@0.20,0.3@0.50,0'
 frames_per_eg=150,110,90
 remove_egs=false
-common_egs_dir=
-#common_egs_dir=exp/chain/tdnn_1b_kws2/egs
+#common_egs_dir=
+common_egs_dir=exp/chain/tdnn_1b_kws6/egs
 xent_regularize=0.1
 
 # End configuration section.
@@ -93,16 +93,16 @@ if [ $stage -le 10 ]; then
   # please note that it is important to have input layer with the name=input
   # as the layer immediately preceding the fixed-affine-layer to enable
   # the use of short notation for the descriptor
-  conv-relu-batchnorm-layer name=cnn1 height-in=71 height-out=71 time-offsets=-1,0,1 height-offsets=-1,0,1 num-filters-out=16
+  conv-relu-batchnorm-layer name=cnn1 height-in=71 height-out=71 time-offsets=-1,0,1 height-offsets=-1,0,1 num-filters-out=8
   linear-component name=cnnl1 dim=142 $linear_opts
   
   # the first splicing is moved before the lda layer, so no splicing here
-  relu-batchnorm-layer name=tdnn1 dim=100
-  relu-batchnorm-layer name=tdnn2 dim=100 input=Append(-1,0,2)
+  relu-batchnorm-layer name=tdnn1 dim=142
+  relu-batchnorm-layer name=tdnn2 dim=142 input=Append(-1,0,2)
 #  relu-batchnorm-layer name=tdnn3 dim=100 input=Append(-3,0,3)
 #  relu-batchnorm-layer name=tdnn4 dim=100 input=Append(-7,0,2)
 #  relu-batchnorm-layer name=tdnn5 dim=100 input=Append(-3,0,3)
-  relu-batchnorm-layer name=tdnn3 dim=100
+  relu-batchnorm-layer name=tdnn3 dim=142
   linear-component name=prefinal-l dim=128 $linear_opts 
   relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=100 target-rms=0.5
   output-layer name=output include-log-softmax=false dim=$num_targets $output_opts max-change=1.5
