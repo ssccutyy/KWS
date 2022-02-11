@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=kws9
+affix=kws10
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -29,8 +29,8 @@ minibatch_size=128
 dropout_schedule='0,0@0.20,0.3@0.50,0'
 frames_per_eg=150,110,90
 remove_egs=false
-common_egs_dir=
-#common_egs_dir=exp/chain/tdnn_1b_kws9/egs
+#common_egs_dir=
+common_egs_dir=exp/chain/tdnn_1b_kws9/egs
 xent_regularize=0.1
 
 # End configuration section.
@@ -98,16 +98,16 @@ if [ $stage -le 10 ]; then
   
   # the first splicing is moved before the lda layer, so no splicing here
 #  relu-batchnorm-layer name=tdnn1 dim=142
-  relu-batchnorm-layer name=tdnn2 dim=71 input=Append(-1,0,2)
+  relu-batchnorm-layer name=tdnn2 dim=32 input=Append(-1,0,2)
 #  relu-batchnorm-layer name=tdnn3 dim=100 input=Append(-3,0,3)
 #  relu-batchnorm-layer name=tdnn4 dim=100 input=Append(-7,0,2)
 #  relu-batchnorm-layer name=tdnn5 dim=100 input=Append(-3,0,3)
 #  relu-batchnorm-layer name=tdnn3 dim=48
-  linear-component name=prefinal-l dim=64 $linear_opts 
-  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=64 target-rms=0.5
+  linear-component name=prefinal-l dim=32 $linear_opts 
+  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=32 target-rms=0.5
   output-layer name=output include-log-softmax=false dim=$num_targets $output_opts max-change=1.5
 
-  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=64 target-rms=0.5
+  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=32 target-rms=0.5
   output-layer name=output-xent dim=$num_targets learning-rate-factor=$learning_rate_factor $output_opts max-change=1.5
 EOF
   steps/nnet3/xconfig_to_configs.py --xconfig-file $dir/configs/network.xconfig --config-dir $dir/configs/
