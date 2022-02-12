@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=kws10
+affix=kws11
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -29,8 +29,8 @@ minibatch_size=128
 dropout_schedule='0,0@0.20,0.3@0.50,0'
 frames_per_eg=150,110,90
 remove_egs=false
-#common_egs_dir=
-common_egs_dir=exp/chain/tdnn_1b_kws9/egs
+common_egs_dir=
+#common_egs_dir=exp/chain/tdnn_1b_kws9/egs
 xent_regularize=0.1
 
 # End configuration section.
@@ -121,7 +121,7 @@ if [ $stage -le 11 ]; then
 
   steps/nnet3/chain/train.py --stage $train_stage \
     --cmd "$cuda_cmd" \
-    --feat.cmvn-opts "--norm-means=false --norm-vars=false" \
+    --feat.cmvn-opts "--norm-means=true --norm-vars=true" \
     --chain.xent-regularize $xent_regularize \
     --chain.leaky-hmm-coefficient 0.1 \
     --chain.l2-regularize 0.00005 \
