@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=kws11
+affix=kws12
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -93,21 +93,21 @@ if [ $stage -le 10 ]; then
   # please note that it is important to have input layer with the name=input
   # as the layer immediately preceding the fixed-affine-layer to enable
   # the use of short notation for the descriptor
-#  conv-relu-batchnorm-layer name=cnn1 height-in=71 height-out=71 time-offsets=-1,0,1 height-offsets=-1,0,1 num-filters-out=8
-#  linear-component name=cnnl1 dim=142 $linear_opts
+  conv-relu-batchnorm-layer name=cnn1 height-in=71 height-out=71 time-offsets=-1,0,1 height-offsets=-1,0,1 num-filters-out=32
+  linear-component name=cnnl1 dim=284 $linear_opts
   
   # the first splicing is moved before the lda layer, so no splicing here
-#  relu-batchnorm-layer name=tdnn1 dim=142
-  relu-batchnorm-layer name=tdnn2 dim=32 input=Append(-1,0,2)
-#  relu-batchnorm-layer name=tdnn3 dim=100 input=Append(-3,0,3)
-#  relu-batchnorm-layer name=tdnn4 dim=100 input=Append(-7,0,2)
-#  relu-batchnorm-layer name=tdnn5 dim=100 input=Append(-3,0,3)
-#  relu-batchnorm-layer name=tdnn3 dim=48
-  linear-component name=prefinal-l dim=32 $linear_opts 
-  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=32 target-rms=0.5
+  relu-batchnorm-layer name=tdnn1 dim=400
+  relu-batchnorm-layer name=tdnn2 dim=400 input=Append(-1,0,2)
+  relu-batchnorm-layer name=tdnn3 dim=400 input=Append(-3,0,3)
+  relu-batchnorm-layer name=tdnn4 dim=400 input=Append(-7,0,2)
+  relu-batchnorm-layer name=tdnn5 dim=400 input=Append(-3,0,3)
+  relu-batchnorm-layer name=tdnn6 dim=400
+  linear-component name=prefinal-l dim=256 $linear_opts 
+  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=400 target-rms=0.5
   output-layer name=output include-log-softmax=false dim=$num_targets $output_opts max-change=1.5
 
-  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=32 target-rms=0.5
+  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=400 target-rms=0.5
   output-layer name=output-xent dim=$num_targets learning-rate-factor=$learning_rate_factor $output_opts max-change=1.5
 EOF
   steps/nnet3/xconfig_to_configs.py --xconfig-file $dir/configs/network.xconfig --config-dir $dir/configs/
