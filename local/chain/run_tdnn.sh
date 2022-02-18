@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=2kws4
+affix=2kws5
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -97,8 +97,8 @@ if [ $stage -le 10 ]; then
 #  linear-component name=cnnl1 dim=142 $linear_opts
   
   # the first splicing is moved before the lda layer, so no splicing here
-#  relu-batchnorm-layer name=tdnn1 dim=200
-  relu-batchnorm-layer name=tdnn2 dim=32 input=Append(-1,0,2)
+  relu-batchnorm-layer name=tdnn1 dim=32
+#  relu-batchnorm-layer name=tdnn2 dim=32 input=Append(-1,0,2)
 #  relu-batchnorm-layer name=tdnn3 dim=200 input=Append(-3,0,3)
 #  relu-batchnorm-layer name=tdnn4 dim=200 input=Append(-7,0,2)
 #  relu-batchnorm-layer name=tdnn5 dim=200 input=Append(-3,0,3)
@@ -166,4 +166,4 @@ if [ $stage -le 13 ]; then
 fi
 
 echo "local/chain/run_tdnn.sh succeeded"
-#exit 0;
+exit 0;
