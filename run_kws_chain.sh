@@ -24,7 +24,7 @@ kws_lang=data/lang
 kws_word=你好米雅
 kws_phone="n i3 h ao3 m i3 ii ia3"
 
-stage=11
+stage=10
 
 do_train_aishell1=true
 
