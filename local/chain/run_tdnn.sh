@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=2kws5
+affix=2kws6
 stage=10
 train_stage=-10
 get_egs_stage=-10
@@ -103,11 +103,11 @@ if [ $stage -le 10 ]; then
 #  relu-batchnorm-layer name=tdnn4 dim=200 input=Append(-7,0,2)
 #  relu-batchnorm-layer name=tdnn5 dim=200 input=Append(-3,0,3)
 #  relu-batchnorm-layer name=tdnn6 dim=200
-  linear-component name=prefinal-l dim=32 $linear_opts 
-  relu-batchnorm-layer name=prefinal-chain input=prefinal-l $opts dim=32 target-rms=0.5
+#  linear-component name=prefinal-l dim=32 $linear_opts 
+  relu-batchnorm-layer name=prefinal-chain input=tdnn1 $opts dim=32 target-rms=0.5
   output-layer name=output include-log-softmax=false dim=$num_targets $output_opts max-change=1.5
 
-  relu-batchnorm-layer name=prefinal-xent input=prefinal-l $opts dim=32 target-rms=0.5
+  relu-batchnorm-layer name=prefinal-xent input=tdnn1 $opts dim=32 target-rms=0.5
   output-layer name=output-xent dim=$num_targets learning-rate-factor=$learning_rate_factor $output_opts max-change=1.5
 EOF
   steps/nnet3/xconfig_to_configs.py --xconfig-file $dir/configs/network.xconfig --config-dir $dir/configs/
