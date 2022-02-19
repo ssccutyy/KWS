@@ -9,7 +9,7 @@
 set -e
 
 # configs for 'chain'
-affix=2kws8
+affix=2kws11
 stage=10
 train_stage=-10
 get_egs_stage=-10
